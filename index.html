@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quénada — Portail officiel</title>
+  <meta name="description" content="Portail officiel — services, nouvelles et information publique." />
+  <meta name="theme-color" content="#004B87" />
+  <style>
+    :root{
+      --brand:#004B87;
+      --accent:#007ACC;
+      --bg:#f6f8fa;
+      --muted:#6b7280;
+      --radius:12px;
+      --max-width:1200px;
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:#0b1220}
+    a{text-decoration:none;color:inherit}
+    .container{max-width:var(--max-width);margin:0 auto;padding:0 20px}
+
+    /* top nav */
+    .top-nav{background:var(--brand);color:white;padding:6px 20px;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+    .top-nav-left{font-weight:700}
+    .top-nav-right{display:flex;gap:20px;align-items:center}
+    .lang-switch{cursor:pointer;color:#FFD700}
+
+    /* main nav */
+    header{background:white;box-shadow:0 2px 8px rgba(0,0,0,0.1);position:sticky;top:0;z-index:50}
+    nav ul{display:flex;list-style:none;gap:20px;justify-content:center;padding:14px 0;font-weight:600}
+    nav ul li a{padding:6px 10px;border-radius:6px;transition:background 0.2s}
+    nav ul li a:hover{background:var(--accent);color:white}
+
+    /* hero */
+    .hero{display:grid;grid-template-columns:1fr;gap:20px;align-items:center;padding:60px 20px;background:url('https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;color:white;position:relative;text-align:center}
+    .hero::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5)}
+    .hero-content{position:relative;z-index:2}
+    .hero h1{font-size:44px;margin-bottom:20px;}
+    .hero p{font-size:20px;max-width:700px;margin:0 auto 20px}
+    .btn{background:var(--accent);color:white;padding:10px 18px;border-radius:8px;transition:transform 0.2s;display:inline-block;margin-top:10px}
+    .btn:hover{transform:scale(1.05)}
+
+    /* services */
+    .services-intro{text-align:center;padding:50px 20px;background:white}
+    .services-intro p{margin:12px auto;font-size:18px;color:var(--muted);max-width:700px}
+
+    /* actualités */
+    .news{padding:50px 20px}
+    .news h2{text-align:center;font-size:28px;margin-bottom:30px}
+    .news-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+    .news-card{background:white;padding:20px;border-radius:var(--radius);box-shadow:0 4px 12px rgba(0,0,0,0.08);display:flex;flex-direction:column;justify-content:space-between}
+    .news-category{font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
+    .news-title{font-size:18px;font-weight:700;margin-bottom:8px}
+    .news-desc{font-size:14px;color:var(--muted);margin-bottom:14px}
+    .news-footer{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted)}
+    .news-footer a{background:var(--accent);color:white;padding:6px 12px;border-radius:6px;font-size:13px}
+
+    /* démocratie */
+    .democracy{padding:60px 20px;text-align:center;color:white;background:linear-gradient(135deg,#004B87,#2ecc71)}
+    .democracy h2{font-size:28px;margin-bottom:12px}
+    .democracy p{font-size:18px;max-width:700px;margin:0 auto 20px}
+    .democracy .btn-white{background:white;color:var(--brand);padding:10px 20px;border-radius:8px;margin:8px;display:inline-block}
+    .democracy .btn-white:hover{background:#f0f0f0}
+
+    /* footer */
+    footer{background:#0b1220;color:white;padding:30px 20px;font-size:14px}
+    footer h4{margin-top:20px;font-size:16px}
+    footer ul{list-style:none;margin-top:10px}
+    footer ul li{margin-bottom:6px}
+    footer ul li a{color:#ccc}
+    footer ul li a:hover{color:white}
+    .footer-bottom{margin-top:20px;border-top:1px solid rgba(255,255,255,0.2);padding-top:12px;text-align:center;color:#bbb;font-size:13px}
+  </style>
+</head>
+<body>
+  <!-- Top navigation -->
+  <div class="top-nav">
+    <div class="top-nav-left">Quénada</div>
+    <div class="top-nav-right">
+      <div id="weather">⛅ 18°C</div>
+      <div>Urgence: (+71)</div>
+      <div class="lang-switch" onclick="toggleLang()">FR | EN</div>
+    </div>
+  </div>
+
+  <!-- Main navigation -->
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/">Accueil</a></li>
+        <li><a href="/services">Service citoyen</a></li>
+        <li><a href="/gouvernement">Gouvernement</a></li>
+        <li><a href="/documents">Documents</a></li>
+        <li><a href="/tourisme">Tourisme</a></li>
+        <li><a href="/actualites">Actualités</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/login">Se connecter</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section id="hero" class="hero">
+    <div class="hero-content">
+      <h1>Bienvenue au Portail officiel du Quénada</h1>
+      <p>Accédez facilement à tous vos services administratifs en ligne, 24h/24 et 7j/7</p>
+      <a href="/services" class="btn">Voir plus !</a>
+    </div>
+  </section>
+
+  <!-- Actualités -->
+  <section class="news">
+    <h2>Actualités</h2>
+    <div class="container news-grid">
+      <div class="news-card">
+        <div>
+          <div class="news-category">Environnement</div>
+          <div class="news-title">Nouvelle politique écologique</div>
+          <div class="news-desc">Un plan d’action ambitieux pour réduire les émissions de CO₂.</div>
+        </div>
+        <div class="news-footer">
+          <span>05/09/2025</span>
+          <a href="/actualites/1">Lire plus</a>
+        </div>
+      </div>
+
+      <div class="news-card">
+        <div>
+          <div class="news-category">Culture</div>
+          <div class="news-title">Festival national des arts</div>
+          <div class="news-desc">Une célébration de la diversité artistique à travers le pays.</div>
+        </div>
+        <div class="news-footer">
+          <span>01/09/2025</span>
+          <a href="/actualites/2">Lire plus</a>
+        </div>
+      </div>
+
+      <div class="news-card">
+        <div>
+          <div class="news-category">Politique</div>
+          <div class="news-title">Réformes économiques en cours</div>
+          <div class="news-desc">Des mesures pour stimuler la croissance et l’emploi durable.</div>
+        </div>
+        <div class="news-footer">
+          <span>25/08/2025</span>
+          <a href="/actualites/3">Lire plus</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Démocratie -->
+  <section class="democracy">
+    <h2>Participez à la vie démocratique</h2>
+    <p>Votre voix compte. Participez aux consultations publiques et contribuez à façonner l'avenir du Quénada.</p>
+    <a href="/consultations" class="btn-white">Consultations en cours</a>
+    <a href="/elu" class="btn-white">Contacter votre élu</a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="/etat-civil">État Civil</a></li>
+        <li><a href="/passeports">Passeports</a></li>
+        <li><a href="/permis">Permis de Conduire</a></li>
+        <li><a href="/cadastre">Cadastre</a></li>
+      </ul>
+
+      <h4>Gouvernement</h4>
+      <ul>
+        <li><a href="/presidence">Présidence</a></li>
+        <li><a href="/assemblee">Assemblée Nationale</a></li>
+        <li><a href="/ministeres">Ministères</a></li>
+        <li><a href="/publications">Publications Officielles</a></li>
+      </ul>
+
+      <h4>Contact</h4>
+      <p>📍 Place de la République<br>Qué-Ville, Quénada</p>
+      <p>📞 +596 800 QUEBEC</p>
+      <p>✉️ info@gouv.qc</p>
+    </div>
+
+    <div class="footer-bottom">
+      © 2024 République du Quénada. Tous droits réservés. | <a href="/confidentialite">Politique de confidentialité</a> | <a href="/mentions">Mentions légales</a>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year')?.textContent = new Date().getFullYear();
+    function toggleLang(){
+      alert('Langue changée (exemple).');
+    }
+  </script>
+</body>
+</html>

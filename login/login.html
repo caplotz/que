@@ -1,1 +1,83 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Se connecter — Quénada</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <!-- Top navigation -->
+  <div class="top-nav">
+    <div class="top-nav-left">Quénada</div>
+    <div class="top-nav-right">
+      <div id="weather">⛅ 18°C</div>
+      <div>Urgence: (+71)</div>
+      <div class="lang-switch" onclick="toggleLang()">FR | EN</div>
+    </div>
+  </div>
+
+  <!-- Main navigation -->
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/">Accueil</a></li>
+        <li><a href="/services">Service citoyen</a></li>
+        <li><a href="/gouvernement">Gouvernement</a></li>
+        <li><a href="/documents">Documents</a></li>
+        <li><a href="/tourisme">Tourisme</a></li>
+        <li><a href="/actualites">Actualités</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/login" class="active">Se connecter</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Login Form -->
+  <section class="services-intro">
+    <h1>Se connecter</h1>
+    <form id="login-form" style="max-width:400px;margin:20px auto;text-align:left">
+      <label>Code Social</label>
+      <input type="text" id="socialCode" required style="width:100%;margin:8px 0;padding:10px">
+
+      <label>Mot de passe</label>
+      <input type="password" id="password" required style="width:100%;margin:8px 0;padding:10px">
+
+      <label style="display:flex;align-items:center;gap:6px;margin:10px 0">
+        <input type="checkbox" id="remember"> Rester connecté
+      </label>
+
+      <button type="submit" class="btn" style="width:100%">Se connecter</button>
+    </form>
+    <p style="text-align:center">Je n'ai pas de compte ? <a href="/register">Créer un compte</a></p>
+  </section>
+
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"
+
+    const supabaseUrl = "https://ctdleonvxornpnbecqqf.supabase.co"
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0ZGxlb252eG9ybnBuYmVjcXFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcyNjA1NDMsImV4cCI6MjA3MjgzNjU0M30.3X0QB-W26Rwj_PkOLu39Sq8gH1o-1AGZq2yHfQO9uEg"
+    const supabase = createClient(supabaseUrl, supabaseKey)
+
+    const form = document.getElementById("login-form")
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault()
+      const socialCode = document.getElementById("socialCode").value
+      const password = document.getElementById("password").value
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: socialCode + "@quenada.qc", // hack : email basé sur code social
+        password
+      })
+
+      if (error) {
+        alert("Erreur : " + error.message)
+      } else {
+        alert("Connexion réussie ✅")
+        window.location.href = "/"
+      }
+    })
+  </script>
+</body>
+</html>
 

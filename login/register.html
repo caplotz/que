@@ -43,6 +43,9 @@
       <label>Code Social</label>
       <input type="text" id="socialCode" required style="width:100%;margin:8px 0;padding:10px">
 
+      <label>Email</label>
+      <input type="email" id="email" required style="width:100%;margin:8px 0;padding:10px">
+
       <label>Mot de passe</label>
       <input type="password" id="password" required style="width:100%;margin:8px 0;padding:10px">
 
@@ -58,37 +61,43 @@
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"
 
     const supabaseUrl = "https://ctdleonvxornpnbecqqf.supabase.co"
-    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0ZGxlb252eG9ybnBuYmVjcXFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcyNjA1NDMsImV4cCI6MjA3MjgzNjU0M30.3X0QB-W26Rwj_PkOLu39Sq8gH1o-1AGZq2yHfQO9uEg"
+    const supabaseKey = "TON_SUPABASE_KEY_ICI"
     const supabase = createClient(supabaseUrl, supabaseKey)
 
-    const allowedCodes = [\"QC1234\",\"QC5678\",\"QC9999\"] // exemple DB locale
-    const form = document.getElementById(\"register-form\")
+    const allowedCodes = ["QC1234","QC5678","QC9999"] // exemple
+    const form = document.getElementById("register-form")
 
-    form.addEventListener(\"submit\", async (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault()
-      const fullName = document.getElementById(\"fullName\").value
-      const socialCode = document.getElementById(\"socialCode\").value
-      const password = document.getElementById(\"password\").value
+      const fullName = document.getElementById("fullName").value
+      const socialCode = document.getElementById("socialCode").value
+      const email = document.getElementById("email").value
+      const password = document.getElementById("password").value
 
       if (!allowedCodes.includes(socialCode)) {
-        alert(\"Code social invalide ❌\"); return
+        alert("Code social invalide ❌"); return
       }
-
-      const email = socialCode + \"@quenada.qc\"
 
       // Vérifier si déjà 2 comptes avec ce code
       const { data: users } = await supabase.auth.admin.listUsers()
-      const count = users?.users?.filter(u => u.email.startsWith(socialCode)).length || 0
+      const count = users?.users?.filter(u => u.user_metadata?.socialCode === socialCode).length || 0
       if (count >= 2) {
-        alert(\"Maximum 2 comptes par code social ❌\"); return
+        alert("Maximum 2 comptes par code social ❌"); return
       }
 
-      const { error } = await supabase.auth.signUp({ email, password })
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { fullName, socialCode }
+        }
+      })
+
       if (error) {
-        alert(\"Erreur : \" + error.message)
+        alert("Erreur : " + error.message)
       } else {
-        alert(\"Compte créé ✅\")
-        window.location.href = \"/login\"
+        alert("Compte créé ✅ Vérifie ton email pour confirmer ton compte.")
+        window.location.href = "/login"
       }
     })
   </script>

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Créer un compte — Quénada</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <!-- Top navigation -->
+  <div class="top-nav">
+    <div class="top-nav-left">Quénada</div>
+    <div class="top-nav-right">
+      <div id="weather">⛅ 18°C</div>
+      <div>Urgence: (+71)</div>
+      <div class="lang-switch" onclick="toggleLang()">FR | EN</div>
+    </div>
+  </div>
+
+  <!-- Main navigation -->
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/">Accueil</a></li>
+        <li><a href="/services">Service citoyen</a></li>
+        <li><a href="/gouvernement">Gouvernement</a></li>
+        <li><a href="/documents">Documents</a></li>
+        <li><a href="/tourisme">Tourisme</a></li>
+        <li><a href="/actualites">Actualités</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/login">Se connecter</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Register Form -->
+  <section class="services-intro">
+    <h1>Créer un compte</h1>
+    <form id="register-form" style="max-width:400px;margin:20px auto;text-align:left">
+      <label>Nom complet</label>
+      <input type="text" id="fullName" required style="width:100%;margin:8px 0;padding:10px">
+
+      <label>Code Social</label>
+      <input type="text" id="socialCode" required style="width:100%;margin:8px 0;padding:10px">
+
+      <label>Email</label>
+      <input type="email" id="email" required style="width:100%;margin:8px 0;padding:10px">
+
+      <label>Mot de passe</label>
+      <input type="password" id="password" required style="width:100%;margin:8px 0;padding:10px">
+
+      <label style="display:flex;align-items:center;gap:6px;margin:10px 0">
+        <input type="checkbox" id="remember"> Rester connecté
+      </label>
+
+      <button type="submit" class="btn" style="width:100%">Créer mon compte</button>
+    </form>
+  </section>
+
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"
+
+    const supabaseUrl = "https://ctdleonvxornpnbecqqf.supabase.co"
+    const supabaseKey = "TON_SUPABASE_KEY_ICI"
+    const supabase = createClient(supabaseUrl, supabaseKey)
+
+    const allowedCodes = ["QC1234","QC5678","QC9999"] // exemple
+    const form = document.getElementById("register-form")
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault()
+      const fullName = document.getElementById("fullName").value
+      const socialCode = document.getElementById("socialCode").value
+      const email = document.getElementById("email").value
+      const password = document.getElementById("password").value
+
+      if (!allowedCodes.includes(socialCode)) {
+        alert("Code social invalide ❌"); return
+      }
+
+      // Vérifier si déjà 2 comptes avec ce code
+      const { data: users } = await supabase.auth.admin.listUsers()
+      const count = users?.users?.filter(u => u.user_metadata?.socialCode === socialCode).length || 0
+      if (count >= 2) {
+        alert("Maximum 2 comptes par code social ❌"); return
+      }
+
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { fullName, socialCode }
+        }
+      })
+
+      if (error) {
+        alert("Erreur : " + error.message)
+      } else {
+        alert("Compte créé ✅ Vérifie ton email pour confirmer ton compte.")
+        window.location.href = "/login"
+      }
+    })
+  </script>
+</body>
+</html>
